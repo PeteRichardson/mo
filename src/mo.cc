@@ -25,7 +25,11 @@ int main(int argc, char*argv[]) {
             continue;
         }
         cout << "File: " << arg << '\n';
-        DumpHeader(cout, (void*)file.data());
+        
+        auto filedata = (uint8_t *)file.data();
+
+        auto header = mach_header_64( filedata );
+        cout << &header << endl;
         file.close();
     } 
 }

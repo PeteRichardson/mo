@@ -16,10 +16,9 @@ struct mach_header_64 {
 	uint32_t	flags;		/* flags */
 	uint32_t	reserved;	/* reserved */
 
-    explicit mach_header_64(uint8_t *);
-    
+    explicit mach_header_64(const char *);
 };
 
-std::ostream& operator<<(std::ostream& out, const mach_header_64* mh);
+std::ostream& operator<<(std::ostream& out, const mach_header_64& mh);
 
 #endif

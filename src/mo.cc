@@ -26,10 +26,13 @@ int main(int argc, char*argv[]) {
         }
         cout << "File: " << arg << '\n';
         
-        auto filedata = (uint8_t *)file.data();
+        auto header = mach_header_64(file.data());    
+        cout << header << endl;
 
-        auto header = mach_header_64( filedata );
-        cout << &header << endl;
+        // auto load_cmds?? = load_cmds(header.ncmds, file.data() + sizeof(mach_header_64));
+        // for (auto cmd: load_cmds)
+        //     cout << cmd << endl;
+
         file.close();
     } 
 }

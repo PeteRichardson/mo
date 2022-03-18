@@ -5,25 +5,10 @@
 #include <vector>
 #include <array>
 
-#include "mach-o/loader.h"
 #include "memory_mapped_file.hpp"
+#include "macho.h"
 
 using std::cout, std::endl;
-
-
-void DumpHeader(memory_mapped_file::read_only_mmf file) {
-    // auto header = file.data();
-    mach_header_64* mh = reinterpret_cast<mach_header_64*>((void*)file.data());
-    cout << "Mach-O Header:\n";
-    cout << std::hex << std::showbase;
-    cout << "\tmagic:       " << mh->magic << endl;
-    cout << "\tcputtype:    " << mh->cputype << ":" << mh->cpusubtype << endl;
-    cout << "\tfiletype:    " << mh->filetype << endl;
-    cout << std::dec << "\tncmds:       " << mh->ncmds << endl;
-    cout << "\tsizeofcmds:  " << mh->sizeofcmds << endl;
-    cout << std::hex << "\tflags:       " << mh->flags << endl;
-}
-
 
 int main(int argc, char*argv[]) {
     if (argc < 2) {
@@ -40,7 +25,7 @@ int main(int argc, char*argv[]) {
             continue;
         }
         cout << "File: " << arg << '\n';
-        DumpHeader(file);
+        DumpHeader(cout, (void*)file.data());
         file.close();
     } 
 }

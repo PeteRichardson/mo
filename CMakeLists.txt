@@ -19,6 +19,7 @@ FetchContent_MakeAvailable(cpp-mmf)
 
 add_executable(mo
     src/mo.cc
+    src/macho.cc
     ${cpp-mmf_SOURCE_DIR}/memory_mapped_file.cpp)
 
 include_directories(${cpp-mmf_SOURCE_DIR})

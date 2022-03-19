@@ -25,13 +25,9 @@ int main(int argc, char*argv[]) {
             continue;
         }
         cout << "File: " << arg << '\n';
-        
-        auto header = mach_header_64(file.data());    
-        cout << header << endl;
 
-        // auto load_cmds?? = load_cmds(header.ncmds, file.data() + sizeof(mach_header_64));
-        // for (auto cmd: load_cmds)
-        //     cout << cmd << endl;
+        auto mfile = mach_file(file.data());
+        cout << mfile << endl;
 
         file.close();
     } 

@@ -231,28 +231,6 @@ struct mach_header {
 					   the filesystem. */
 
 /*
- * The load commands directly follow the mach_header.  The total size of all
- * of the commands is given by the sizeofcmds field in the mach_header.  All
- * load commands must have as their first two fields cmd and cmdsize.  The cmd
- * field is filled in with a constant for that command type.  Each command type
- * has a structure specifically for it.  The cmdsize field is the size in bytes
- * of the particular load command structure plus anything that follows it that
- * is a part of the load command (i.e. section structures, strings, etc.).  To
- * advance to the next load command the cmdsize can be added to the offset or
- * pointer of the current load command.  The cmdsize for 32-bit architectures
- * MUST be a multiple of 4 bytes and for 64-bit architectures MUST be a multiple
- * of 8 bytes (these are forever the maximum alignment of any load commands).
- * The padded bytes must be zero.  All tables in the object file must also
- * follow these rules so the file can be memory mapped.  Otherwise the pointers
- * to these tables will not work well or at all on some machines.  With all
- * padding zeroed like objects will compare byte for byte.
- */
-struct load_command {
-	uint32_t cmd;		/* type of load command */
-	uint32_t cmdsize;	/* total size of command in bytes */
-};
-
-/*
  * After MacOS X 10.1 when a new load command is added that is required to be
  * understood by the dynamic linker for the image to execute properly the
  * LC_REQ_DYLD bit will be or'ed into the load command constant.  If the dynamic
@@ -369,25 +347,6 @@ struct segment_command { /* for 32-bit architectures */
 	uint32_t	flags;		/* flags */
 };
 
-/*
- * The 64-bit segment load command indicates that a part of this file is to be
- * mapped into a 64-bit task's address space.  If the 64-bit segment has
- * sections then section_64 structures directly follow the 64-bit segment
- * command and their size is reflected in cmdsize.
- */
-struct segment_command_64 { /* for 64-bit architectures */
-	uint32_t	cmd;		/* LC_SEGMENT_64 */
-	uint32_t	cmdsize;	/* includes sizeof section_64 structs */
-	char		segname[16];	/* segment name */
-	uint64_t	vmaddr;		/* memory address of this segment */
-	uint64_t	vmsize;		/* memory size of this segment */
-	uint64_t	fileoff;	/* file offset of this segment */
-	uint64_t	filesize;	/* amount to map from the file */
-	vm_prot_t	maxprot;	/* maximum VM protection */
-	vm_prot_t	initprot;	/* initial VM protection */
-	uint32_t	nsects;		/* number of sections in segment */
-	uint32_t	flags;		/* flags */
-};
 
 /* Constants for the flags field of the segment_command */
 #define	SG_HIGHVM	0x1	/* the file contents for this segment is for

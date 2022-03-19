@@ -9,19 +9,24 @@
 #include "modified_loader.h"
 
 struct mach_header_64 {
-	uint32_t	magic;		/* mach magic number identifier */
-	cpu_type_t	cputype;	/* cpu specifier */
-	cpu_subtype_t	cpusubtype;	/* machine specifier */
-	uint32_t	filetype;	/* type of file */
-	uint32_t	ncmds;		/* number of load commands */
-	uint32_t	sizeofcmds;	/* the size of all the load commands */
-	uint32_t	flags;		/* flags */
-	uint32_t	reserved;	/* reserved */
+    uint32_t magic;        /* mach magic number identifier */
+    cpu_type_t cputype;    /* cpu specifier */
+    cpu_subtype_t cpusubtype;    /* machine specifier */
+    uint32_t filetype;    /* type of file */
+    uint32_t ncmds;        /* number of load commands */
+    uint32_t sizeofcmds;    /* the size of all the load commands */
+    uint32_t flags;        /* flags */
+    uint32_t reserved;    /* reserved */
 
-	mach_header_64() = default;
+    mach_header_64() = default;
+
     explicit mach_header_64(const char *);
-	static std::string const describe_magic(decltype(mach_header_64::magic));
-    static std::string const describe_filetype(decltype(mach_header_64::filetype));
+
+    static std::string describe_magic(decltype(mach_header_64::magic));
+
+    static std::string describe_filetype(decltype(mach_header_64::filetype));
+
+    static std::string describe_flags(decltype(mach_header_64::flags));
 };
 
 std::ostream& operator<<(std::ostream& out, const mach_header_64& mh);
@@ -49,6 +54,7 @@ struct load_command {
 	char* data;
 	
 	explicit load_command(const char *);
+    static std::string const describe_cmd(decltype(load_command::cmd));
 };
 std::ostream& operator<<(std::ostream&, const load_command&);
 /*

@@ -13,7 +13,7 @@ using std::cout, std::endl;
 int main(int argc, char*argv[]) {
     if (argc < 2) {
         auto exe_name = std::filesystem::path(*argv).stem().string();
-        std::cerr << "# usage: " << exe_name << " <mach-o file>..." << std::endl;
+        std::cerr << "# usage: " << exe_name << " <mach-o file>..." << endl;
         exit(EXIT_SUCCESS);
     }
     
@@ -24,7 +24,7 @@ int main(int argc, char*argv[]) {
             std::cerr << "Error:  something ain't right with " << arg<< endl;
             continue;
         }
-        cout << "File: " << arg << '\n';
+        cout << "File: " << arg << endl;
 
         auto mfile = mach_file(file.data());
         cout << mfile << endl;

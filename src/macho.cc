@@ -14,7 +14,7 @@ void _put_dec(std::ostream& out, std::string label, T value, std::string comment
         << std::nouppercase
         << comment;
     }
-    out << '\n';
+    out << std::endl;
 }
 
 template <typename T>
@@ -30,7 +30,7 @@ void _put_hex(std::ostream& out, std::string label, T value, std::string comment
         << std::nouppercase
         << comment;
     }
-    out << '\n';
+    out << std::endl;
 }
 
 std::string const mach_header_64::describe_magic(decltype(mach_header_64::magic) magic) {
@@ -99,9 +99,9 @@ mach_file::mach_file(const char *data) {
 };
 
 std::ostream& operator<<(std::ostream& out, const mach_file& mf) {
-    out << "Header:\n" << mf.header << '\n';
+    out << "Header:\n" << mf.header << std::endl;
     for (auto cmd: mf.commands) {
-        out << "Load Command:\n"  << cmd << '\n';
+        out << "Load Command:\n"  << cmd << std::endl;
     }
     return out;
 }

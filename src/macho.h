@@ -21,7 +21,7 @@ struct mach_header_64 {
 	mach_header_64() = default;
     explicit mach_header_64(const char *);
 	static std::string const describe_magic(decltype(mach_header_64::magic));
-
+    static std::string const describe_filetype(decltype(mach_header_64::filetype));
 };
 
 std::ostream& operator<<(std::ostream& out, const mach_header_64& mh);

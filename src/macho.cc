@@ -49,13 +49,13 @@ std::string const mach_header_64::describe_magic(decltype(mach_header_64::magic)
 
 mach_header_64::mach_header_64(const char *data) {
     uint32_t o = 0; // offset into incoming data
-    std::memcpy(&(this->magic),      &data[o],  sizeof(decltype(this->magic)));      o += sizeof(decltype(this->magic));
-    std::memcpy(&(this->cputype),    &data[o],  sizeof(decltype(this->cputype)));    o += sizeof(decltype(this->cputype));
-    std::memcpy(&(this->cpusubtype), &data[o],  sizeof(decltype(this->cpusubtype))); o += sizeof(decltype(this->cpusubtype));
-    std::memcpy(&(this->filetype),   &data[o], sizeof(decltype(this->filetype)));    o += sizeof(decltype(this->filetype));
-    std::memcpy(&(this->ncmds),      &data[o], sizeof(decltype(this->ncmds)));       o += sizeof(decltype(this->ncmds));
-    std::memcpy(&(this->sizeofcmds), &data[o], sizeof(decltype(this->sizeofcmds)));  o += sizeof(decltype(this->sizeofcmds));
-    std::memcpy(&(this->flags),      &data[o], sizeof(decltype(this->flags)));       o += sizeof(decltype(this->flags));
+    std::memcpy(&(this->magic),      &data[o], sizeof(decltype(this->magic)));      o += sizeof(decltype(this->magic));
+    std::memcpy(&(this->cputype),    &data[o], sizeof(decltype(this->cputype)));    o += sizeof(decltype(this->cputype));
+    std::memcpy(&(this->cpusubtype), &data[o], sizeof(decltype(this->cpusubtype))); o += sizeof(decltype(this->cpusubtype));
+    std::memcpy(&(this->filetype),   &data[o], sizeof(decltype(this->filetype)));   o += sizeof(decltype(this->filetype));
+    std::memcpy(&(this->ncmds),      &data[o], sizeof(decltype(this->ncmds)));      o += sizeof(decltype(this->ncmds));
+    std::memcpy(&(this->sizeofcmds), &data[o], sizeof(decltype(this->sizeofcmds))); o += sizeof(decltype(this->sizeofcmds));
+    std::memcpy(&(this->flags),      &data[o], sizeof(decltype(this->flags)));      o += sizeof(decltype(this->flags));
     std::memcpy(&(this->reserved),   &data[o], sizeof(decltype(this->reserved)));
 }
 

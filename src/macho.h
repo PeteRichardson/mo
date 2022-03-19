@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <string_view>
 #include <vector>
 
 #include "modified_loader.h"
@@ -19,6 +20,8 @@ struct mach_header_64 {
 
 	mach_header_64() = default;
     explicit mach_header_64(const char *);
+	static std::string const describe_magic(decltype(mach_header_64::magic));
+
 };
 
 std::ostream& operator<<(std::ostream& out, const mach_header_64& mh);

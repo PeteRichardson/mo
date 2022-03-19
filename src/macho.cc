@@ -4,22 +4,47 @@
 #include <iostream>
 
 template <typename T>
-void _put_dec(std::ostream& out, std::string label, T value) {
+void _put_dec(std::ostream& out, std::string label, T value, std::string comment="") {
     out << std::setw(14) << std::setfill(' ') << std::left << std::nouppercase
     << label
     << std::setw(10) << std::setfill(' ') << std::right << std::dec << std::noshowbase
-    << value
-    << '\n';}
+    << value;
+    if (comment.length() > 0) {
+        out << "   # "
+        << std::nouppercase
+        << comment;
+    }
+    out << '\n';
+}
 
 template <typename T>
-void _put_hex(std::ostream& out, std::string label, T value) {
+void _put_hex(std::ostream& out, std::string label, T value, std::string comment="") {
     out << std::setw(14) << std::setfill(' ') << std::left << std::nouppercase
     << label
     << "0x"
     << std::setw(8) << std::setfill('0') << std::right 
     << std::hex << std::noshowbase << std::uppercase
-    << value
-    << '\n';
+    << value;
+    if (comment.length() > 0) {
+        out << "   # "
+        << std::nouppercase
+        << comment;
+    }
+    out << '\n';
+}
+
+std::string const mach_header_64::describe_magic(decltype(mach_header_64::magic) magic) {
+    switch (magic) {
+        case MH_MAGIC: return "MH_MAGIC: the mach magic number";
+            break;
+        case MH_CIGAM: return "MH_CIGAM: NXSwapInt(MH_MAGIC)";
+            break;
+        case MH_MAGIC_64: return "MH_MAGIC_64: the 64-bit mach magic number";
+            break;
+        case MH_CIGAM_64: return "MH_CIGAM_64: NXSwapInt(MH_MAGIC_64)";
+            break;
+    }
+    return "MH_?????: Unrecognized mach magic number";
 }
 
 mach_header_64::mach_header_64(const char *data) {
@@ -36,7 +61,7 @@ mach_header_64::mach_header_64(const char *data) {
 
 std::ostream& operator<<(std::ostream& out, const mach_header_64& mh) {
     out << std::hex << std::showbase;
-    _put_hex(out, "\tmagic:", mh.magic);
+    _put_hex(out, "\tmagic:", mh.magic, mach_header_64::describe_magic(mh.magic));
     _put_hex(out, "\tcputype:", mh.cputype);
     _put_hex(out, "\tcpusubtype:", mh.cpusubtype);
     _put_hex(out, "\tfiletype:", mh.filetype);

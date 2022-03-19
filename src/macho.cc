@@ -207,9 +207,15 @@ std::ostream& operator<<(std::ostream& out, const load_command& lc) {
 mach_file::mach_file(const char *data) {
     uint32_t offset = 0;
 
+    uint32_t *magic = (uint32_t *)data;
+    if (*magic != MH_MAGIC_64) {
+        std::cerr << "# Sorry.  I can only parse 64bit Mach-O binaries." << std::endl;
+        exit(EXIT_FAILURE);
+    };
+
     // parse header
     header = mach_header_64(data);
-    offset += sizeof(mach_header_64);
+    offset += sizeof(header);
 
     for (auto i=0; i<header.ncmds; i++){
         auto cmd = load_command(data + offset);

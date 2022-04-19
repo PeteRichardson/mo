@@ -2,7 +2,7 @@
 
 At the moment it only dumps the header and Load Command types.
 
-usage:   mo <path-to-mach-o-file>
+usage:   mo \<path-to-mach-o-file\>
   
 Sample Output (running mo on itself)
 ```

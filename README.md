@@ -1,6 +1,6 @@
 # mo - a simple mach-o dumper
 
-At the moment it only simple dump the header and Load Command types.
+At the moment it only dumps the header and Load Command types.
 
 usage:   mo <path-to-mach-o-file>
   

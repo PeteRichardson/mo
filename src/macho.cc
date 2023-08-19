@@ -204,6 +204,46 @@ std::ostream& operator<<(std::ostream& out, const load_command& lc) {
     return out;
 }
 
+load_command make_load_command(const char *data) {
+    uint32_t cmd = (uint32_t) *data;
+    switch (cmd) {
+        // case LC_SEGMENT_64:
+        default:
+            return segment_command_64(data);
+        // default:
+        //     return load_command(data);
+    }
+}
+
+segment_command_64::segment_command_64(const char *data) : load_command(data) {
+    uint32_t o = 8; // offset into incoming data
+    std::memcpy(&(this->segname),  &data[o],  sizeof(decltype(this->segname)));  o += sizeof(decltype(this->segname));
+    std::memcpy(&(this->vmaddr),   &data[o],  sizeof(decltype(this->vmaddr)));   o += sizeof(decltype(this->vmaddr));
+    std::memcpy(&(this->vmsize),   &data[o],  sizeof(decltype(this->vmsize)));   o += sizeof(decltype(this->vmsize));
+    std::memcpy(&(this->fileoff),  &data[o],  sizeof(decltype(this->fileoff)));  o += sizeof(decltype(this->fileoff));
+    std::memcpy(&(this->filesize), &data[o],  sizeof(decltype(this->filesize))); o += sizeof(decltype(this->filesize));
+    std::memcpy(&(this->maxprot),  &data[o],  sizeof(decltype(this->maxprot)));  o += sizeof(decltype(this->maxprot));
+    std::memcpy(&(this->initprot), &data[o],  sizeof(decltype(this->initprot))); o += sizeof(decltype(this->initprot));
+    std::memcpy(&(this->nsects),   &data[o],  sizeof(decltype(this->nsects)));   o += sizeof(decltype(this->nsects));
+    std::memcpy(&(this->flags),    &data[o],  sizeof(decltype(this->flags)));    o += sizeof(decltype(this->flags));
+}
+
+std::ostream& operator<<(std::ostream& out, const segment_command_64& seg) {
+    _put_hex(out, "\tcmd:", seg.cmd, load_command::describe_cmd(seg.cmd));
+    _put_dec(out, "\tcmdsize:", seg.cmdsize);
+    _put_hex(out, "\tsegname:", seg.segname, "segment name");
+    _put_hex(out, "\tvmaddr:", seg.vmaddr, "memory address of this segment");
+    _put_hex(out, "\tvmsize:", seg.vmsize, "memory size of this segment");
+    _put_hex(out, "\tfileoff:", seg.fileoff, "file offset of this segment");
+    _put_hex(out, "\tfilesize:", seg.filesize, "amount to map from the file");
+    _put_hex(out, "\tmaxprot:", seg.maxprot, "maximum VM protection");
+    _put_hex(out, "\tinitprot:", seg.initprot, "initial VM protection");
+    _put_hex(out, "\tnsects:", seg.nsects, "number of sections in segment");
+    _put_hex(out, "\tflags:", seg.flags, "flags");
+    return out;
+}
+
+
 mach_file::mach_file(const char *data) {
     uint32_t offset = 0;
 
@@ -218,7 +258,8 @@ mach_file::mach_file(const char *data) {
     offset += sizeof(header);
 
     for (auto i=0; i<header.ncmds; i++){
-        auto cmd = load_command(data + offset);
+        auto cmd = make_load_command(data + offset);
+        std::cout << typeid(cmd).name() << std::endl;
         commands.push_back(cmd);
         offset += cmd.cmdsize; 
     }
@@ -227,7 +268,8 @@ mach_file::mach_file(const char *data) {
 std::ostream& operator<<(std::ostream& out, const mach_file& mf) {
     out << "Header:\n" << mf.header << std::endl;
     for (auto cmd: mf.commands) {
-        out << "Load Command:\n"  << cmd << std::endl;
+        out << "Load Command:\n";
+        out << cmd << std::endl;
     }
     return out;
 }

@@ -76,7 +76,10 @@ struct segment_command_64 : load_command { /* for 64-bit architectures */
 	uint32_t	nsects;		/* number of sections in segment */
 	uint32_t	flags;		/* flags */
 
+	explicit segment_command_64(const char *);
 };
+std::ostream& operator<<(std::ostream&, const segment_command_64&);
+
 
 struct mach_file {
 	mach_header_64 header;

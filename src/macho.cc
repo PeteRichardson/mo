@@ -259,7 +259,7 @@ mach_file::mach_file(const char *data) {
 
     for (auto i=0; i<header.ncmds; i++){
         auto cmd = make_load_command(data + offset);
-        std::cout << typeid(cmd).name() << std::endl;
+        //std::cout << typeid(cmd).name() << std::endl;
         commands.push_back(cmd);
         offset += cmd.cmdsize; 
     }
